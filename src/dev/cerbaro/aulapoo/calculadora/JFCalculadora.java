@@ -272,7 +272,8 @@ public class JFCalculadora extends javax.swing.JFrame {
         jButtonInverseOp.setBackground(new java.awt.Color(244, 244, 244));
         jButtonInverseOp.setFont(new java.awt.Font("Roboto Mono", 0, 18)); // NOI18N
         jButtonInverseOp.setForeground(new java.awt.Color(17, 17, 17));
-        jButtonInverseOp.setText("1/x");
+        jButtonInverseOp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/dev/cerbaro/aulapoo/calculadora/icons/vulgar-fraction.png"))); // NOI18N
+        jButtonInverseOp.setActionCommand("1/x");
         jButtonInverseOp.setBorderPainted(false);
         jButtonInverseOp.setFocusPainted(false);
         jButtonInverseOp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);

@@ -14,7 +14,7 @@ public abstract class AbstractOperator {
     private final String operationCode;
     private CalculatorState state;
     
-    protected final MathContext MATH_CONTEXT = MathContext.DECIMAL64;
+    public static final MathContext MATH_CONTEXT = MathContext.DECIMAL128;
 
     public AbstractOperator(String operationCode) {
         this.operationCode = operationCode;

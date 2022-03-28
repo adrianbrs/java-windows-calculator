@@ -287,6 +287,14 @@ public class CalculatorState {
             }
         }
         
+        // Limita o número de casas decimais
+        if (resultInput.contains(sep)) {
+            int decimalDigits = resultInput.substring(resultInput.indexOf(sep) + 1).length();
+            if (decimalDigits >= CalculatorUtils.getPrecision()) {
+                return;
+            }
+        }
+        
         resultInput += input;
         setInput(resultInput);
         

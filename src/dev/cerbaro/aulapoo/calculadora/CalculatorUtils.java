@@ -6,7 +6,6 @@ package dev.cerbaro.aulapoo.calculadora;
 
 import java.awt.Font;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import javax.swing.JLabel;
 
@@ -26,7 +25,8 @@ public class CalculatorUtils {
      * @return 
      */
     public static String numberToString(BigDecimal number) {
-        DecimalFormat df = new DecimalFormat("###,###.#####################################");
+        // 34 casas decimais, máximo suportado pelo padrão IEEE 754R Decimal128
+        DecimalFormat df = new DecimalFormat("###,###." + "#".repeat(getPrecision()));
         return df.format(number);
     }
     
@@ -85,10 +85,18 @@ public class CalculatorUtils {
     }
     
     public static String getErrorMessage(ArithmeticException ex) {
-        if (ex.getMessage().toLowerCase().contains("division by zero")) {
+        String msg = ex.getMessage().toLowerCase();
+        if (msg.contains("division by zero")) {
             return "Não é possível dividir por 0";
         }
+        if (msg.contains("undefined")) {
+            return "Resultado indefinido";
+        }
         ex.printStackTrace();
-        return "Erro de aritimética desconhecido";
+        return "Erro aritmético desconhecido";
+    }
+    
+    public static int getPrecision() {
+        return AbstractOperator.MATH_CONTEXT.getPrecision() ;
     }
 }

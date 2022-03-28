@@ -6,7 +6,6 @@ package dev.cerbaro.aulapoo.calculadora.operators;
 
 import dev.cerbaro.aulapoo.calculadora.AbstractOperator;
 import dev.cerbaro.aulapoo.calculadora.CalculatorState;
-import dev.cerbaro.aulapoo.calculadora.Operand;
 
 /**
  *

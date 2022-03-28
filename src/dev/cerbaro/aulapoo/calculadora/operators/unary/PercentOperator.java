@@ -44,6 +44,6 @@ public class PercentOperator extends AbstractUnaryOperator {
         
         BigDecimal leftOperandValue = state.getLeftOperand() != null ? state.getLeftOperand().getValue() : BigDecimal.ZERO;
         targetOperand.addDisplayText("%s%%");
-        targetOperand.setValue(value.divide(BigDecimal.valueOf(100d)).multiply(leftOperandValue));
+        targetOperand.setValue(value.divide(BigDecimal.valueOf(100d), MATH_CONTEXT).multiply(leftOperandValue, MATH_CONTEXT));
     }
 }
