@@ -39,12 +39,14 @@ import dev.cerbaro.aulapoo.calculadora.operators.unary.Pow2Operator;
 import dev.cerbaro.aulapoo.calculadora.operators.unary.Sqrt2Operator;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.swing.text.DefaultFormatterFactory;
+import javax.swing.text.NumberFormatter;
 
 /**
  *
@@ -162,16 +164,11 @@ public class JFCalculadora extends javax.swing.JFrame {
                 formComponentResized(evt);
             }
         });
-        addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
-        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
-        jPanelContainer.setMaximumSize(new java.awt.Dimension(750, 600));
+        jPanelContainer.setMaximumSize(new java.awt.Dimension(700, 600));
         jPanelContainer.setMinimumSize(new java.awt.Dimension(320, 420));
-        jPanelContainer.setPreferredSize(new java.awt.Dimension(750, 600));
+        jPanelContainer.setPreferredSize(new java.awt.Dimension(700, 600));
         jPanelContainer.setLayout(new java.awt.BorderLayout());
 
         jPanelVisor.setBackground(new java.awt.Color(235, 235, 235));
@@ -191,18 +188,24 @@ public class JFCalculadora extends javax.swing.JFrame {
         jLabelOperations.setPreferredSize(new java.awt.Dimension(400, 24));
         jPanelVisor.add(jLabelOperations, java.awt.BorderLayout.NORTH);
 
-        jLabelInput.setFont(new java.awt.Font("Roboto Mono", 1, 36)); // NOI18N
-        jLabelInput.setForeground(new java.awt.Color(17, 17, 17));
-        jLabelInput.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        jLabelInput.setMaximumSize(new java.awt.Dimension(400, 40));
-        jLabelInput.setMinimumSize(new java.awt.Dimension(400, 40));
-        jLabelInput.setPreferredSize(new java.awt.Dimension(400, 40));
-        jLabelInput.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jLabelInputPropertyChange(evt);
-            }
-        });
-        jPanelVisor.add(jLabelInput, java.awt.BorderLayout.SOUTH);
+        jTextInput.setEditable(false);
+        jTextInput.setBackground(null);
+        jTextInput.setBorder(null);
+        jTextInput.setForeground(new java.awt.Color(17, 17, 17));
+        jTextInput.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        jTextInput.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        jTextInput.setFont(new java.awt.Font("Roboto Mono", 1, 36)); // NOI18N
+        jTextInput.setMinimumSize(new java.awt.Dimension(320, 50));
+        jTextInput.setPreferredSize(new java.awt.Dimension(320, 50));
+        // Format
+        NumberFormat numberFormat = NumberFormat.getNumberInstance();
+        numberFormat.setMaximumFractionDigits(CalculatorUtils.getPrecision());
+        NumberFormatter formatter = new NumberFormatter(numberFormat);
+        jTextInput.setFormatterFactory(new DefaultFormatterFactory(formatter));
+
+        // Document Listener
+        jTextInput.getDocument().addDocumentListener(new AutosizeDocumentListener(jTextInput));
+        jPanelVisor.add(jTextInput, java.awt.BorderLayout.SOUTH);
 
         jPanelContainer.add(jPanelVisor, java.awt.BorderLayout.NORTH);
 
@@ -648,13 +651,6 @@ public class JFCalculadora extends javax.swing.JFrame {
         state.toggleInputSignal();
     }//GEN-LAST:event_jButtonToggleSignalActionPerformed
 
-    private void jLabelInputPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLabelInputPropertyChange
-        // Sempre que o texto for alterado, ajusta o label para que o texto encaixe no componente
-        if (evt.getPropertyName().equalsIgnoreCase("text")) {
-            CalculatorUtils.autosizeLabel((JLabel) evt.getSource());
-        }
-    }//GEN-LAST:event_jLabelInputPropertyChange
-
     private void jButtonInverseOpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonInverseOpActionPerformed
         state.handleOperationCommand(evt.getActionCommand());
     }//GEN-LAST:event_jButtonInverseOpActionPerformed
@@ -672,12 +668,8 @@ public class JFCalculadora extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonPercentOpActionPerformed
 
     private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        CalculatorUtils.autosizeLabel(jLabelInput);
+        CalculatorUtils.autosizeTextComponent(jTextInput);
     }//GEN-LAST:event_formComponentResized
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-        
-    }//GEN-LAST:event_formKeyPressed
     
     
     /**
@@ -745,10 +737,10 @@ public class JFCalculadora extends javax.swing.JFrame {
     public final javax.swing.JButton jButtonSubtract = new javax.swing.JButton();
     public final javax.swing.JButton jButtonSum = new javax.swing.JButton();
     public final javax.swing.JButton jButtonToggleSignal = new javax.swing.JButton();
-    public final javax.swing.JLabel jLabelInput = new javax.swing.JLabel();
     public final javax.swing.JLabel jLabelOperations = new javax.swing.JLabel();
     public final javax.swing.JPanel jPanelButtons = new javax.swing.JPanel();
     public final javax.swing.JPanel jPanelContainer = new javax.swing.JPanel();
     public final javax.swing.JPanel jPanelVisor = new javax.swing.JPanel();
+    public final javax.swing.JFormattedTextField jTextInput = new javax.swing.JFormattedTextField();
     // End of variables declaration//GEN-END:variables
 }

@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import javax.swing.JLabel;
+import javax.swing.text.JTextComponent;
 
 /**
  *
@@ -17,7 +18,7 @@ public class CalculatorUtils {
     /**
      * Proporção mínima do texto, diminui no máximo até a escala definida
      */
-    private static final double MIN_FONT_SCALE_RATIO = 0.4;
+    private static final double MIN_FONT_SCALE_RATIO = 0.46;
     
     /**
      * Converte um BigDecimal para uma string formatada
@@ -49,23 +50,23 @@ public class CalculatorUtils {
     
     /**
      * Ajusta a fonte de um JLabel para que o texto não ultrapasse a largura do componente
-     * @param label 
+     * @param textComponent 
      */
-    public static void autosizeLabel(JLabel label) {
-        String text = label.getText();
-        Font originalFont = (Font) label.getClientProperty("originalfont");
+    public static void autosizeTextComponent(JTextComponent textComponent) {
+        String text = textComponent.getText();
+        Font originalFont = (Font) textComponent.getClientProperty("originalfont");
         
         // Salva as informações da fonte original se ainda não tiver sido salva
         if (originalFont == null) {
-            originalFont = label.getFont();
-            label.putClientProperty("originalfont", originalFont);
+            originalFont = textComponent.getFont();
+            textComponent.putClientProperty("originalfont", originalFont);
         }
 
         // Pega a largura do texto com a fonte original
-        int stringWidth = label.getFontMetrics(originalFont).stringWidth(text);
+        int stringWidth = textComponent.getFontMetrics(originalFont).stringWidth(text);
         
         // Pega a largura real do componente
-        int componentWidth = label.getWidth();
+        int componentWidth = textComponent.getWidth();
 
         // Se a largura do texto, for maior que do componente, altera o tamanho da fonte
         if (stringWidth > componentWidth) {
@@ -77,10 +78,10 @@ public class CalculatorUtils {
             int newFontSize = (int) Math.floor(originalFont.getSize() * widthRatio);
             
             // Define o tamanho da fonte para o tamanho calculado
-            label.setFont(new Font(originalFont.getName(), originalFont.getStyle(), newFontSize));
+            textComponent.setFont(new Font(originalFont.getName(), originalFont.getStyle(), newFontSize));
         } else {
             // A largura do texto cabe na largura do componente, então mantém a fonte original
-            label.setFont(originalFont);
+            textComponent.setFont(originalFont);
         }
     }
     

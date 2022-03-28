@@ -13,7 +13,6 @@ import javax.swing.JButton;
  */
 public class CalculatorState {
     private BigDecimal result = BigDecimal.ZERO;
-    private BigDecimal inputValue = BigDecimal.ZERO;
     private boolean dirty = false;
     private boolean resultShown = false;
     private String error = null;
@@ -72,8 +71,7 @@ public class CalculatorState {
     }
     
     public void setInput(BigDecimal input) {
-        inputValue = input;
-        setPlainInput(CalculatorUtils.numberToString(input));
+        setInputValue(input);
     }
     
     public void setInput(String input) {
@@ -86,21 +84,20 @@ public class CalculatorState {
         
         String sep = CalculatorUtils.getDecimalSeparator();
         
-        // Verifica se o número está completo para formatar, caso contrário, define o input
-        // com o valor parcial digitado até o momento. Isso é necessário pois ao diginal zero a direita
-        // após o separador decimal, ao formatar esses valores são removidos
-        try {
-            if (!input.endsWith(sep) && (!input.contains(sep) || !input.endsWith("0"))) {
-                inputValue = CalculatorUtils.stringToNumber(input);
-                input = CalculatorUtils.numberToString(inputValue);
-            }
-        } catch (Exception ex) {}
-        
-        setPlainInput(input);
+        setInputValue(CalculatorUtils.stringToNumber(input));
+            
+        // Se o número não estiver completo sobrescreve a formatação do text input
+        if (input.endsWith(sep) || (input.contains(sep) && input.endsWith("0"))) {
+            setPlainInput(input);
+        }
     }
     
     public void setPlainInput(String plainInput) {
-        calculatorInstance.jLabelInput.setText(plainInput);
+        calculatorInstance.jTextInput.setText(plainInput);
+    }
+    
+    public void setInputValue(BigDecimal value) {
+        calculatorInstance.jTextInput.setValue(value);
     }
     
     public void clearInput() {
@@ -108,11 +105,11 @@ public class CalculatorState {
     }
     
     public String getInput() {
-        return calculatorInstance.jLabelInput.getText();
+        return calculatorInstance.jTextInput.getText();
     }
     
     public BigDecimal getInputValue() {
-        return inputValue;
+        return (BigDecimal) calculatorInstance.jTextInput.getValue();
     }
     
     public Operand getLeftOperand() {
